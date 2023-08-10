@@ -147,7 +147,7 @@ if(isset($_POST['proses'])){
     id_sampah = '$_POST[id_sampah]',
     jumlah_sampah = '$_POST[jumlah_sampah]'") or die(mysqli_error($koneksi));
     
-    echo "<script>alert('Data telah tersimpan')</script>";
+    echo "<script>alert('Data telah tersimpan') </script>";
 }
  
 ?>

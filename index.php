@@ -1,5 +1,14 @@
 <?php
      include "koneksi.php";
+ 
+session_start();
+ 
+if (!isset($_SESSION['username'])) {
+    header("Location: login.php");
+}
+ 
+
+
 ?>
 
 <!DOCTYPE html>
@@ -26,6 +35,7 @@
 <nav class="navbar navbar-expand-lg" style="background-color: rgba(127, 255, 0, 1.0); position:sticky; top:0;">
   <div class="container-fluid">
     <img src="logo.png" width="60px"/>
+    <a href="logout.php" class="btn">Logout</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -33,15 +43,15 @@
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
 
       </ul>
-      <span class="navbar-text">
-        NAMA USER
-      </span>
+      <?php
+      echo "<span class='navbar-text'>". $_SESSION['username'] ."</span>";
+      ?>
     </div>
   </div>
 </nav>
 
 <div class=" container-fluid   d-flex align-items-start justify-content-center  flex-column" style="height: 500px;" >
-    <h1 class="pt-5">Selamat Datang, Nama Users</h1>
+   <?php echo "<h1 class='pt-5'>Selamat Datang, " . $_SESSION['username'] ."</h1>"; ?>
     <p>ini adalah website resmi dari BANK SAMPAH BANTUL Daerah Istimewa Yogyakarta (DIY).<br>Disini anda dapat menjual barang bekas anda yang sudah tidak terpakai</p>
    <div class="d-flex flex-row">
     <a href="data_harga.php" class="btn btn-primary me-2">Data Sampah</a>
