@@ -48,6 +48,7 @@
               <th>Username</th>
               <th>Barang</th>
               <th>jumlah</th>
+              <th>harga satuan</th>
               <th>harga</th>
               <th>tanggal</th>
             </tr>
@@ -55,20 +56,22 @@
           <tbody>
             <?php 
             $no=1;
-            $query = "SELECT setor.*, users.username,users.id_users, sampah.nama_sampah,  SUM(setor.jumlah_sampah)  AS jumlah_total, SUM(setor.jumlah_sampah) * sampah.harga_sampah AS harga_total FROM setor 
+            $query = "SELECT setor.*, 
+            SUM(sampah.harga_sampah) AS cek, 
+            users.username,users.id_users, sampah.nama_sampah,  
+            SUM(setor.jumlah_sampah)  AS jumlah_total, 
+            SUM(setor.jumlah_sampah) * sampah.harga_sampah AS harga_total 
+            FROM setor 
             INNER JOIN users ON  setor.id_users=users.id_users
             INNER JOIN sampah ON setor.id_sampah=sampah.id_sampah
             GROUP BY users.id_users, sampah.nama_sampah;";
-            $query2 ="SELECT setor.*, SUM(sampah.harga_sampah) FROM setor  
-            INNER JOIN sampah ON setor.id_sampah=sampah.id_sampah
-            GROUP BY sampah.harga_sampah;";
             $sql=mysqli_query($koneksi, $query) or die (mysqli_error($koneksi));
-            $sql2=mysqli_query($koneksi, $query2) or die (mysqli_error($koneksi));
+            //$sql2=mysqli_query($koneksi, $query2) or die (mysqli_error($koneksi));
             //$t = mysqli_fetch_array($sql);
             while ($data = mysqli_fetch_array($sql))
             //var_dump($t['username']);
             //while ($data2 = mysqli_fetch_array($sql2)) 
-            { $total = $data['harga_sampah'] + $data['harga_total'];
+            { //$total = $data['harga_sampah'] + $data['harga_total'];
              ?>
             <tr>
               <td><?=$no++?>.</td>
@@ -76,9 +79,50 @@
               <td><?=$data['username']?>.</td>
               <td><?=$data['nama_sampah']?>.</td>
               <td><?=$data['jumlah_total']?></td>
+              <td><?=$data['cek']?></td>
               <td><?=$data['harga_total']?></td>
               <td><?=$data['Tanggal']?>.</td>
             </tr>
+            <?php
+            }
+        ?>
+            </tbody>
+        </table>
+
+        <table id="dt" class="table align-middle   cell-border stripe hover">
+          <thead>
+            <tr>
+              <th><center>No.</center></th>
+              <th>id</th>
+              <th>Username</th>
+              <th>tabungan</th>
+            </tr>
+            </thead>
+          <tbody>
+            <?php 
+            $no=1;
+            $query2 = "SELECT setor.*, 
+            SUM(sampah.harga_sampah) AS cek, 
+            users.username,users.id_users,
+            SUM(setor.jumlah_sampah)  AS jumlah_total, 
+            SUM(setor.jumlah_sampah * sampah.harga_sampah) AS tabungan 
+            FROM setor 
+            INNER JOIN users ON  setor.id_users=users.id_users
+            INNER JOIN sampah ON setor.id_sampah=sampah.id_sampah
+            GROUP BY users.id_users;";
+            //$sql=mysqli_query($koneksi, $query) or die (mysqli_error($koneksi));
+            $sql2=mysqli_query($koneksi, $query2) or die (mysqli_error($koneksi));
+            //$t = mysqli_fetch_array($sql);
+            while ($data2 = mysqli_fetch_array($sql2))
+            //var_dump($t['username']);
+            //while ($data2 = mysqli_fetch_array($sql2)) 
+            { //$total = $data['harga_sampah'] + $data['harga_total'];
+             ?>
+            <tr>
+              <td><?=$no++?>.</td>
+              <td><?=$data2['id_users']?>.</td>
+              <td><?=$data2['username']?>.</td>
+              <td><?=$data2['tabungan']?>.</td>
             <?php
             }
         ?>
