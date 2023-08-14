@@ -9,7 +9,7 @@
   --dt-html-background: white;
 }
 :root.dark {
-  --dt-html-background: rgb(33, 37, 41);
+  --dt-html-background: rgba(33, 37, 41, 0);
 }
 
 table.dataTable td.dt-control {
