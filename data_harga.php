@@ -59,8 +59,8 @@
             echo "<td>".$data['harga_sampah']."</td>";
 
             echo "<td>";
-            echo "<a href='edit_sampah.php?id_sampah=".$data['id_sampah']."' class='btn btn-success ml-1'>Edit</a>";
-            echo "<a href='hapus.php?id_sampah=".$data['id_sampah']."' class='btn btn-danger'>Hapus</a>";
+            //echo "<a href='edit_sampah.php?id_sampah=".$data['id_sampah']."' class='btn btn-success ml-1'>Edit</a>";
+            //echo "<a href='hapus.php?id_sampah=".$data['id_sampah']."' class='btn btn-danger'>Hapus</a>";
             echo "</td>";
 
             echo "</tr>";
@@ -69,8 +69,8 @@
 
     </tbody>
     </table>
-        <a href="form_jual.php" class="btn btn-primary ">Jual Barang</a>
-        <a href="tambah_sampah.php" class="btn btn-primary">Tambah Barang</a>
+        <!--<a href="form_jual.php" class="btn btn-primary ">Jual Barang</a>
+        <a href="tambah_sampah.php" class="btn btn-primary">Tambah Barang</a>-->
         </div>
 </body>
 </html>

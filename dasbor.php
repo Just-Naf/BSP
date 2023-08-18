@@ -1,17 +1,49 @@
 <?php
-     include "koneksi.php";
- 
-session_start();
- 
-if (!isset($_SESSION['username'])) {
-    header("Location: login.php");
-}
- 
+    include "koneksi.php";
+
+    session_start();
+    $username = $_SESSION['username'];
+
 //$tampilPeg=mysqli_query($koneksi, "SELECT * FROM setor WHERE username='$_SESSION[username]'");
 //$peg=mysqli_fetch_array($tampilPeg);
 //var_dump($peg);
 
+//Query untuk menampilkan tabel jenis kelamin
+$nama_sm= "";
+$jumlah=null;
+
+$sql="SELECT id_sampah,COUNT(*) as 'total' FROM setor GROUP by id_sampah";
+
+$hasil=mysqli_query($koneksi,$sql);
+
+while ($data = mysqli_fetch_array($hasil)) {
+$sm=$data['id_sampah'];
+$nama_sm .= "'$sm'". ", ";
+
+$jum=$data['total'];
+$jumlah .= "$jum". ", ";
+
+}
+//Query untuk menampilkan tabel mahasiswa2
+
+
 ?>
+
+<?php
+        $id_usr= "";
+        $jumlah=null;
+
+        $sql="SELECT id_users,COUNT(*) as 'total' FROM users";
+
+          $hasil=mysqli_query($koneksi,$sql);
+
+    while ($data = mysqli_fetch_array($hasil)) {
+
+        $jum=$data['total'];
+        $jumlah .= "$jum". ", ";
+    }
+
+    ?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -35,6 +67,8 @@ if (!isset($_SESSION['username'])) {
     <link rel="stylesheet" href="./css/style.css">
     <!-- End layout styles -->
     <link rel="shortcut icon" href="./images/favicon.png" />
+    <!-- fontawsome -->
+    <link rel="stylesheet" href="fontawesome/css/font-awesome.min.css">
   </head>
   <body>
 
@@ -44,10 +78,10 @@ if (!isset($_SESSION['username'])) {
       <!-- partial:partials/_navbar.html -->
       <nav class="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
         <div class="navbar-brand-wrapper d-flex align-items-center">
-          <a class="" href="index.html">
+          <a class="" href="index.php">
             <img src="gb-1.png" alt="logo" class="mt-5" width="30%" height="30%" />   
           </a>
-          <a class="navbar-brand brand-logo-mini" href="index.html"><img src="images/logo-mini.svg" alt="logo" /></a>
+          <a class="navbar-brand brand-logo-mini" href="index.php"><img src="images/logo-mini.svg" alt="logo" /></a>
         </div>
         <div class="navbar-menu-wrapper d-flex align-items-center flex-grow-1">
           <h5 class="mb-0 font-weight-medium d-none d-lg-flex">Welcome</h5>
@@ -94,8 +128,8 @@ if (!isset($_SESSION['username'])) {
             </li>
             <li class="nav-item nav-category"><span class="nav-link">UI Elements</span></li>
             <li class="nav-item">
-              <a class="nav-link" href="pages/charts/chartist.html">
-                <span class="menu-title">Charts</span>
+              <a class="nav-link" href="dtsampah.php">
+                <span class="menu-title">Data Sampah</span>
                 <i class="icon-chart menu-icon"></i>
               </a>
             </li>
@@ -117,7 +151,8 @@ if (!isset($_SESSION['username'])) {
 
                 </div>
               </div>
-            </div>     
+            </div>   
+
             <div class="row">
               <div class="col-md-12 grid-margin">
                 <div class="card">
@@ -132,35 +167,35 @@ if (!isset($_SESSION['username'])) {
                     <div class="row report-inner-cards-wrapper">
                       <div class=" col-md -6 col-xl report-inner-card">
                         <div class="inner-card-text">
-                          <span class="report-title">EXPENSE</span>
-                          <h4>$32123</h4>
+                          <span class="report-title">NASABAH</span>
+                          <h4><?php echo $jumlah ?></h4>
                           <span class="report-count"> 2 Reports</span>
                         </div>
                         <div class="inner-card-icon bg-success">
-                          <i class="icon-rocket"></i>
+                        <i class="fa fa-address-book-o" aria-hidden="true"></i>
                         </div>
                       </div>
                       <div class="col-md-6 col-xl report-inner-card">
                         <div class="inner-card-text">
-                          <span class="report-title">PURCHASE</span>
-                          <h4>95,458</h4>
+                          <span class="report-title">ADMIN</span>
+                          <h4>1</h4>
                           <span class="report-count"> 3 Reports</span>
                         </div>
                         <div class="inner-card-icon bg-danger">
-                          <i class="icon-briefcase"></i>
+                        <i class="fa fa-user-secret" aria-hidden="true"></i>
                         </div>
                       </div>
                       <div class="col-md-6 col-xl report-inner-card">
                         <div class="inner-card-text">
                           <span class="report-title">TABUNGAN</span>
-                          <h4>2650</h4>
+                          <h4>...</h4>
                           <span class="report-count"> 5 Reports</span>
                         </div>
                         <div class="inner-card-icon bg-warning">
                           <i class="icon-credit-card"></i>
                         </div>
                       </div>
-                      <div class="col-md-6 col-xl report-inner-card">
+                      <!--<div class="col-md-6 col-xl report-inner-card">
                         <div class="inner-card-text">
                           <span class="report-title">RETURN</span>
                           <h4>25,542</h4>
@@ -169,7 +204,7 @@ if (!isset($_SESSION['username'])) {
                         <div class="inner-card-icon bg-primary">
                           <i class="icon-diamond"></i>
                         </div>
-                      </div>
+                      </div>-->
                     </div>
                   </div>
                 </div>
@@ -190,18 +225,26 @@ if (!isset($_SESSION['username'])) {
                         <thead>
                           <tr>
                             <th class="font-weight-bold">No</th>
-                            <th class="font-weight-bold">id user</th>
                             <th class="font-weight-bold">nama</th>
                             <th class="font-weight-bold">barang</th>
                             <th class="font-weight-bold">jumlah</th>
                             <th class="font-weight-bold">harga</th>
                             <th class="font-weight-bold">Tanggal</th>
+                            <th class="font-weight-bold">Total</th>
                           </tr>
                         </thead>
                         <tbody>
                         <?php 
             $no=1;
-            $query = "SELECT setor.*, users.username, users.id_users, sampah.nama_sampah,  SUM(setor.jumlah_sampah)  AS jumlah_total, SUM(setor.jumlah_sampah * sampah.harga_sampah) AS harga_total FROM setor 
+            $total=0;
+            $query = "SELECT setor.*, users.username, 
+            sampah.harga_sampah, 
+            users.id_users, 
+            sampah.nama_sampah,  
+            SUM(setor.jumlah_sampah) 
+            AS jumlah_total, 
+            SUM(setor.jumlah_sampah * sampah.harga_sampah) AS harga_total
+            FROM setor 
             INNER JOIN users ON  setor.id_users=users.id_users
             INNER JOIN sampah ON setor.id_sampah=sampah.id_sampah
             GROUP BY users.id_users, sampah.nama_sampah;";
@@ -212,25 +255,23 @@ if (!isset($_SESSION['username'])) {
             $sql2=mysqli_query($koneksi, $query2) or die (mysqli_error($koneksi));
             //$t = mysqli_fetch_array($sql);
             while ($data = mysqli_fetch_array($sql))
-            //var_dump($t['username']);
-            //while ($data2 = mysqli_fetch_array($sql2)) 
-            { $total = $data['harga_sampah'] + $data['harga_total'];
+            { $total = $data['harga_sampah'] * $data['jumlah_sampah'];           
+              //var_dump($data['username']);
              ?>
                           <tr>
                             <td><?=$no++?>.</td>
-                            <td><?=$data['id_users']?></td>
                             <td><?=$data['username']?></td>
                             <td><?=$data['nama_sampah']?></td>
                             <td><?=$data['jumlah_sampah']?></td>
-                            <td><?=$data['harga_total']?></td>
+                            <td><?php echo number_format($total)?></td>
                             <td><?=$data['Tanggal']?></td>
+                            <td><?=$data['harga_total']?></td>
                             <td>
-                              <div class="badge badge-success p-2">Paid</div>
                             </td>
                           </tr>
                           <?php
-            }
-        ?>
+                              }
+                          ?>
                         </tbody>
                       </table>
 
@@ -260,9 +301,12 @@ if (!isset($_SESSION['username'])) {
               <div class="col-md-4 grid-margin stretch-card">
                 <div class="card">
                   <div class="card-body">
-                    <h4 class="card-title">Sessions by channel</h4>
+                    <h4 style="text-align:center;" class="card-title">Tentang Perusahaan</h4>
                     <div class="aligner-wrapper">
-                      <canvas id="sessionsDoughnutChart" height="210"></canvas>
+                    <a href="index.php">
+                      <img src="logoS.png" width="100%" style="border-radius:50%"/>
+                    </a>
+                  <!--<canvas id="grafik" height="210"></canvas>
                       <div class="wrapper d-flex flex-column justify-content-center absolute absolute-center">
                         <h2 class="text-center mb-0 font-weight-bold">8.234</h2>
                         <small class="d-block text-center text-muted  font-weight-semibold mb-0">Total Leads</small>
@@ -280,7 +324,7 @@ if (!isset($_SESSION['username'])) {
                       <div class="d-flex">
                         <span class="square-indicator bg-warning ml-2"></span>
                         <p class="mb-0 ml-2">Reassigned</p>
-                      </div>
+                      </div>-->
                     </div>
                   </div>
                 </div>
@@ -289,30 +333,71 @@ if (!isset($_SESSION['username'])) {
                 <div class="card">
                   <div class="card-body performane-indicator-card">
                     <div class="d-sm-flex">
-                      <h4 class="card-title flex-shrink-1">Performance Indicator</h4>
-                      <p class="m-sm-0 ml-sm-auto flex-shrink-0">
-                        <span class="data-time-range ml-0">7d</span>
-                        <span class="data-time-range active">2w</span>
-                        <span class="data-time-range">1m</span>
-                        <span class="data-time-range">3m</span>
-                        <span class="data-time-range">6m</span>
-                      </p>
+                    <div class="table-responsive border rounded p-1">
+                      <table class="table">
+                        <thead>
+                          <tr>
+                            <th class="font-weight-bold">id</th>
+                            <th class="font-weight-bold">Nama</th>
+                            <th class="font-weight-bold">Saldo</th>
+                            <th class="font-weight-bold">Tanggal</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                        <?php 
+                        $no=1;
+                        $total=0;
+                        $query = "SELECT setor.*,
+                        users.username, 
+                        sampah.harga_sampah, 
+                        users.id_users, 
+                        sampah.nama_sampah,  
+                        SUM(setor.jumlah_sampah) 
+                        AS jumlah_total, 
+                        SUM(setor.jumlah_sampah * sampah.harga_sampah) AS harga_total
+                        FROM setor 
+                        INNER JOIN users ON  setor.id_users=users.id_users
+                        INNER JOIN sampah ON setor.id_sampah=sampah.id_sampah
+                        WHERE setor.flag = 0 AND  users.id_users = 1
+                        GROUP BY users.id_users, sampah.nama_sampah, setor.flag;";
+                        $sql=mysqli_query($koneksi, $query) or die (mysqli_error($koneksi));
+                        //$t = mysqli_fetch_array($sql);
+                        while ($data = mysqli_fetch_array($sql))
+                        { $total = $data['harga_sampah'] * $data['jumlah_sampah']; 
+                          //var_dump($data['username']);
+                         ?>
+           
+                          <tr>
+                            <td><?=$no++?>.</td>
+                            <td><?=$data['username']?></td>
+                            <td><?php echo number_format($total)?></td>
+                            <td><?=$data['Tanggal']?></td>
+                            <td><?=$data['flag']?></td>
+                            <td>
+                            </td>
+                        </tr>
+                          <?php
+            }
+        ?>
+                    <?php
+              echo "<a href='tarik.php?id_setor=".$data['id_setor']."' class='btn btn-danger'>tarik</a>";?>
+                        </tbody>
+                      </table>
+                      <div class="d-flex mt-4 flex-wrap">
+                      <p class="text-muted">Showing 1 to 10 of 57 entries</p>
+                      <nav class="ml-auto">
+                        <ul class="pagination separated pagination-info">
+                          <li class="page-item"><a href="#" class="page-link"><i class="icon-arrow-left"></i></a></li>
+                          <li class="page-item active"><a href="#" class="page-link">1</a></li>
+                          <li class="page-item"><a href="#" class="page-link">2</a></li>
+                          <li class="page-item"><a href="#" class="page-link">3</a></li>
+                          <li class="page-item"><a href="#" class="page-link">4</a></li>
+                          <li class="page-item"><a href="#" class="page-link"><i class="icon-arrow-right"></i></a></li>
+                        </ul>
+                      </nav>
                     </div>
-                    <div class="d-sm-flex flex-wrap">
-                      <div class="d-flex align-items-center">
-                        <span class="dot-indicator bg-primary ml-2"></span>
-                        <p class="mb-0 ml-2 text-muted font-weight-semibold">Complaints (2098)</p>
-                      </div>
-                      <div class="d-flex align-items-center">
-                        <span class="dot-indicator bg-info ml-2"></span>
-                        <p class="mb-0 ml-2 text-muted font-weight-semibold"> Task Done (1123)</p>
-                      </div>
-                      <div class="d-flex align-items-center">
-                        <span class="dot-indicator bg-danger ml-2"></span>
-                        <p class="mb-0 ml-2 text-muted font-weight-semibold">Attends (876)</p>
-                      </div>
+
                     </div>
-                    <div id="performance-indicator-chart" class="ct-chart mt-4"></div>
                   </div>
                 </div>
               </div>
@@ -380,5 +465,24 @@ if (!isset($_SESSION['username'])) {
     <!-- Custom js for this page -->
     <script src="./js/dashboard.js"></script>
     <!-- End custom js for this page -->
+    <script>
+    var ctx = document.getElementById('grafik').getContext('2d');
+    var chart = new Chart(ctx, {
+        // The type of chart we want to create
+        type: 'doughnut',
+
+        // The data for our dataset
+        data: {
+            labels: [<?php echo $nama_sm; ?>],
+            datasets: [{
+                label:'Data Sampah',
+                backgroundColor: ['rgba(225, 0, 0, 0.5)', 'rgb( 0, 0, 252, 0.5)','rgb(255, 105, 180, 0.5)'],
+                borderColor: ['rgb(255, 99, 132)'],
+                data: [<?php echo $jumlah; ?>]
+            },
+            ]
+        },
+    })
+    </script>
   </body>
 </html>
