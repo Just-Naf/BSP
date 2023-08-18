@@ -49,12 +49,66 @@ if (isset($_POST['submit'])) {
  
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
  
-    <link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="stylesheet" type="text/css" href="login.css">
  
-    <title>Skanibar Register</title>
+    <title>Register</title>
 </head>
 <body>
-    <div class="container">
+<div class="login-container">
+  <form action="" method="POST" class="login-form">
+    <div class="login-form-inner">
+      <h1>Register</h1>
+      <p class="body-text">See your growth and get consulting support!</p>
+
+
+      <div class="sign-in-seperator">
+        <span>Sign in with Username</span>
+      </div>
+
+      <div class="login-form-group">
+        <label for="username">Username <span class="required-star">*</span></label>
+        <input type="text" placeholder="Your Username" id="username" name="username" value="<?php echo $username; ?>">
+      </div>
+      <div class="login-form-group">
+          <label for="pwd">Password <span class="required-star">*</span></label>
+          <input type="password" name="password" placeholder="Minimum 8 characters" id="pwd" value="<?php echo $password; ?>" required>
+        </div>
+        <div class="login-form-group">
+            <label for="pwd">Password <span class="required-star">*</span></label>
+            <input type="password" name="cpassword" placeholder="Minimum 8 characters" id="pw" value="<?php echo $cpassword; ?>" required>
+        </div>
+            <div class="register-div">yuo have account? <a href="login.php" class="link create-account" -link>Login</a></div>
+  
+       <button name="submit" class="rounded-button login-cta">Register</button>
+
+  </div>
+
+  </form>
+  <div class="onboarding">
+    <div class="swiper-container">
+      <div class="swiper-wrapper">
+        <div class="swiper-slide color-1">
+          <div class="slide-image">
+            <img src="https://raw.githubusercontent.com/ismailvtl/ismailvtl.github.io/master/images/startup-launch.png" loading="lazy" alt="" />
+          </div>
+          <div class="slide-content">
+            <h2>Turn your ideas into reality.</h2>
+            <p>Consistent quality and eperience across all platform and devices</p>
+          </div>
+        </div>
+
+
+      </div>
+      <!-- Add Pagination -->
+      <div class="swiper-pagination"></div>
+    </div>
+  </div>
+</div>
+
+    </body>
+    </html>
+    
+    <!--<div class="container">
         <form action="" method="POST" class="login-email">
             <p class="login-text" style="font-size: 2rem; font-weight: 800;">Register</p>
             <div class="input-group">
@@ -71,6 +125,4 @@ if (isset($_POST['submit'])) {
             </div>
             <p class="login-register-text">Kalian sudah punya akun? <a href="login.php">Login </a></p>
         </form>
-    </div>
-</body>
-</html>
+    </div>-!>

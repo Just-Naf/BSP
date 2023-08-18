@@ -14,22 +14,21 @@ $harga_sampah = '';
 if(isset($_GET['ubah'])){
 $id_siswa = $_GET['ubah'];
 
-$query=mysql_query("
-    SELECT sampah.id_sampah, setor.id_sampah, users.id_users
-    FROM sampah
-    JOIN setor ON setor.id_setor = sampah.id_sampah
-    JOIN users ON users.id_users = sampah.id_sampah
-");
-$sql = mysqli_query($koneksi, $query);
+
+$sql = mysqli_query($koneksi,"SELECT sampah.id_sampah, setor.id_sampah, users.id_users
+FROM sampah
+JOIN setor ON setor.id_setor = sampah.id_sampah
+JOIN users ON users.id_users = sampah.id_sampah
+;");
 
 $result = mysqli_fetch_assoc($sql);
 
 $id_setor = $result['id'];
 $id_users = $result['nik'];
 $username = $result['username'];
-$nama_sampah = $result['nama sampah'];
+$nama_sampah = $result['nama_sampah'];
 $id_sampah = $result['no'];
-$jumlah_sampah = $result['jumlah'];
+$jumlah_sampah = $result['jumlah_sampah'];
 $harga_sampah = $result['harga'];
 
     //var_dump($result);
@@ -111,7 +110,7 @@ $harga_sampah = $result['harga'];
             <div class="mb-3 row">
               <label for="jumlah_sampah" class="col-sm-2 col-form-label">jumlah</label>
               <div class="col-sm-10">
-                <input required type="text"name="jumlah_sampah" class="form-control" id="jumlah_sampah" placeholder="99" value="<?php echo $jumlah_sampah; ?>">
+                <input required type="text" name="jumlah_sampah" class="form-control" id="jumlah_sampah" placeholder="99" value="<?php echo $jumlah_sampah; ?>">
               </div>
             </div>
             <div class="mb-3 row mt-4">

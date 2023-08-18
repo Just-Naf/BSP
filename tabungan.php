@@ -56,15 +56,7 @@
           <tbody>
             <?php 
             $no=1;
-            $query = "SELECT setor.*, 
-            SUM(sampah.harga_sampah) AS cek, 
-            users.username,users.id_users, sampah.nama_sampah,  
-            SUM(setor.jumlah_sampah)  AS jumlah_total, 
-            SUM(setor.jumlah_sampah) * sampah.harga_sampah AS harga_total 
-            FROM setor 
-            INNER JOIN users ON  setor.id_users=users.id_users
-            INNER JOIN sampah ON setor.id_sampah=sampah.id_sampah
-            GROUP BY users.id_users, sampah.nama_sampah;";
+            $query = "SELECT setor.id_users, users.username, setor.jumlah_sampah, setor.Tanggal, sampah.harga_sampah, sampah.nama_sampah, SUM(setor.jumlah_sampah) * sampah.harga_sampah AS harga_total FROM setor INNER JOIN users ON setor.id_users=users.id_users INNER JOIN sampah ON setor.id_sampah=sampah.id_sampah GROUP BY setor.id_setor;";
             $sql=mysqli_query($koneksi, $query) or die (mysqli_error($koneksi));
             //$sql2=mysqli_query($koneksi, $query2) or die (mysqli_error($koneksi));
             //$t = mysqli_fetch_array($sql);
@@ -78,8 +70,8 @@
               <td><?=$data['id_users']?>.</td>
               <td><?=$data['username']?>.</td>
               <td><?=$data['nama_sampah']?>.</td>
-              <td><?=$data['jumlah_total']?></td>
-              <td><?=$data['cek']?></td>
+              <td><?=$data['jumlah_sampah']?></td>
+              <td><?=$data['harga_sampah']?></td>
               <td><?=$data['harga_total']?></td>
               <td><?=$data['Tanggal']?>.</td>
             </tr>
@@ -101,16 +93,14 @@
           <tbody>
             <?php 
             $no=1;
-            $query2 = "SELECT setor.*, 
-            SUM(sampah.harga_sampah) AS cek, 
-            users.username,users.id_users,
-            SUM(setor.jumlah_sampah)  AS jumlah_total, 
-            SUM(setor.jumlah_sampah * sampah.harga_sampah) AS tabungan 
-            FROM setor 
+            $query2 = "SELECT users.id_users, users.username, setor.id_setor, sampah.nama_sampah, sampah.harga_sampah, 
+            SUM(setor.jumlah_sampah)  AS jumlah_total_sam, 
+            SUM(setor.jumlah_sampah * sampah.harga_sampah) AS tabungan, setor.Tanggal, setor.flag_tarik
+            FROM setor
             INNER JOIN users ON  setor.id_users=users.id_users
             INNER JOIN sampah ON setor.id_sampah=sampah.id_sampah
-            GROUP BY users.id_users;";
-            //$sql=mysqli_query($koneksi, $query) or die (mysqli_error($koneksi));
+            WHERE setor.flag_tarik='7' AND  users.id_users='6'
+            GROUP BY sampah.id_sampah, users.id_users;";
             $sql2=mysqli_query($koneksi, $query2) or die (mysqli_error($koneksi));
             //$t = mysqli_fetch_array($sql);
             while ($data2 = mysqli_fetch_array($sql2))
@@ -123,10 +113,12 @@
               <td><?=$data2['id_users']?>.</td>
               <td><?=$data2['username']?>.</td>
               <td><?=$data2['tabungan']?>.</td>
-            <?php
+
+            </tbody>              <?php
+              echo "<a href='tarik.php?id_setor=".$data2['id_setor']."' class='btn btn-danger'>tarik</a>";
+
             }
         ?>
-            </tbody>
         </table>
 </body>
 </html>
