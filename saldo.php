@@ -5,22 +5,13 @@
     $id_users = $_SESSION['id_users'];
     $username = $_SESSION['username'];
 
+//$tampilPeg=mysqli_query($koneksi, "SELECT * FROM setor WHERE username='$_SESSION[username]'");
+//$peg=mysqli_fetch_array($tampilPeg);
+//var_dump($peg);
 
-    $no=1;
-    $query = "SELECT setor.id_users, users.username, setor.jumlah_sampah, setor.Tanggal,  
-    sampah.harga_sampah, 
-    sampah.nama_sampah, 
-    SUM(setor.jumlah_sampah) * sampah.harga_sampah AS harga_total 
-    FROM setor 
-    INNER JOIN users ON  setor.id_users=users.id_users
-    INNER JOIN sampah ON setor.id_sampah=sampah.id_sampah
-    WHERE setor.id_users='$_SESSION[id_users]'
-    GROUP BY setor.id_setor;";
-    $sql=mysqli_query($koneksi, $query) or die (mysqli_error($koneksi));
-    //$sql2=mysqli_query($koneksi, $query2) or die (mysqli_error($koneksi));
-    //$t = mysqli_fetch_array($sql);
-    
+//Query untuk menampilkan tabel jenis kelamin
 
+//Query untuk menampilkan tabel mahasiswa2
 
 
 ?>
@@ -130,86 +121,7 @@
                 </div>
               </div>
             </div>     
-            <div class="row">
-              <div class="col-md-12 grid-margin">
-                <div class="card">
-                  <div class="card-body">
-                    <div class="row">
-                      <div class="col-md-12">
-                        <div class="d-sm-flex align-items-baseline report-summary-header">
-                          <h5 class="font-weight-semibold">INFO USER</h5> <span class="ml-auto">Updated Report</span> <button class="btn btn-icons border-0 p-2"><i class="icon-refresh"></i></button>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="row report-inner-cards-wrapper">
-                      <div class=" col-md -6 col-xl report-inner-card">
-                        <div class="inner-card-text">
-                          <span class="report-title">EXPENSE</span>
-                          <?php 
-            include "koneksi.php";
-            $no=1;
-            $query2 = "SELECT users.id_users, users.username, setor.id_setor, 
-            SUM(setor.jumlah_sampah)  AS jumlah_total_sam, 
-            SUM(setor.jumlah_sampah * sampah.harga_sampah) AS tabungan
-            FROM setor
-            INNER JOIN users ON  setor.id_users=users.id_users
-            INNER JOIN sampah ON setor.id_sampah=sampah.id_sampah
-            WHERE setor.id_users='$_SESSION[id_users]' AND flag_tarik='0';";
-            $sql2=mysqli_query($koneksi, $query2) or die (mysqli_error($koneksi));
-            //$t = mysqli_fetch_array($sql);
-            while ($data2 = mysqli_fetch_array($sql2))
-            //var_dump($t['username']);
-            //while ($data2 = mysqli_fetch_array($sql2)) 
-            { //$total = $data['harga_sampah'] + $data['harga_total'];
-             ?>
-
-              <h4>Rp.<?=$data2['tabungan']?></h4>
-
-            <?php
-
-            }
-        ?>
-                          <span class="report-count"> 2 Reports</span>
-                        </div>
-                        <div class="inner-card-icon bg-success">
-                          <i class="icon-rocket"></i>
-                        </div>
-                      </div>
-                      <div class="col-md-6 col-xl report-inner-card">
-                        <div class="inner-card-text">
-                          <span class="report-title">PURCHASE</span>
-                          <h4>95,458</h4>
-                          <span class="report-count"> 3 Reports</span>
-                        </div>
-                        <div class="inner-card-icon bg-danger">
-                          <i class="icon-briefcase"></i>
-                        </div>
-                      </div>
-                      <div class="col-md-6 col-xl report-inner-card">
-                        <div class="inner-card-text">
-                          <span class="report-title">TABUNGAN</span>
-                          <h4>2650</h4>
-                          <span class="report-count"> 5 Reports</span>
-                        </div>
-                        <div class="inner-card-icon bg-warning">
-                          <i class="icon-credit-card"></i>
-                        </div>
-                      </div>
-                      <div class="col-md-6 col-xl report-inner-card">
-                        <div class="inner-card-text">
-                          <span class="report-title">RETURN</span>
-                          <h4>25,542</h4>
-                          <span class="report-count"> 9 Reports</span>
-                        </div>
-                        <div class="inner-card-icon bg-primary">
-                          <i class="icon-diamond"></i>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>      
+               
              <div class="row">
               <div class="col-md-12 grid-margin stretch-card">
                 <div class="card">
@@ -225,18 +137,30 @@
                         <thead>
                           <tr>
                             <th class="font-weight-bold">No</th>
-                            <th class="font-weight-bold">id user</th>
                             <th class="font-weight-bold">nama</th>
-                            <th class="font-weight-bold">sampah</th>
-                            <th class="font-weight-bold">jumlah sampah</th>
-                            <th class="font-weight-bold">harga/sampah</th>
+                            <th class="font-weight-bold">barang</th>
+                            <th class="font-weight-bold">jumlah</th>
+                            <th class="font-weight-bold">harga</th>
+                            <th class="font-weight-bold">Tanggal</th>
                             <th class="font-weight-bold">Total</th>
-                            <th class="font-weight-bold">tgl</th>
                           </tr>
                         </thead>
                         <tbody>
                         <?php 
-                while ($data = mysqli_fetch_array($sql))
+            $no=1;
+            $query = "SELECT setor.id_users, users.username, setor.jumlah_sampah, setor.Tanggal,  
+            sampah.harga_sampah, 
+            sampah.nama_sampah, 
+            SUM(setor.jumlah_sampah) * sampah.harga_sampah AS harga_total 
+            FROM setor 
+            INNER JOIN users ON  setor.id_users=users.id_users
+            INNER JOIN sampah ON setor.id_sampah=sampah.id_sampah
+            WHERE setor.id_users='$_SESSION[id_users]'
+            GROUP BY setor.id_setor;";
+            $sql=mysqli_query($koneksi, $query) or die (mysqli_error($koneksi));
+            //$sql2=mysqli_query($koneksi, $query2) or die (mysqli_error($koneksi));
+            //$t = mysqli_fetch_array($sql);
+            while ($data = mysqli_fetch_array($sql))
             //var_dump($t['username']);
             //while ($data2 = mysqli_fetch_array($sql2)) 
             { //$total = $data['harga_sampah'] + $data['harga_total'];
@@ -334,6 +258,50 @@
                         <span class="dot-indicator bg-danger ml-2"></span>
                         <p class="mb-0 ml-2 text-muted font-weight-semibold">Attends (876)</p>
                       </div>
+                      <div class="table-responsive border rounded p-1">
+                      <table id="dt" class="table align-middle   cell-border stripe hover">
+          <thead>
+            <tr>
+              <th><center>No.</center></th>
+              <th>id</th>
+              <th>Username</th>
+              <th>tabungan</th>
+            </tr>
+            </thead>
+          <tbody>
+            <?php 
+            include "koneksi.php";
+            $no=1;
+            $query2 = "SELECT users.id_users, users.username, setor.id_setor, 
+            SUM(setor.jumlah_sampah)  AS jumlah_total_sam, 
+            SUM(setor.jumlah_sampah * sampah.harga_sampah) AS tabungan
+            FROM setor
+            INNER JOIN users ON  setor.id_users=users.id_users
+            INNER JOIN sampah ON setor.id_sampah=sampah.id_sampah
+            WHERE setor.id_users='$_SESSION[id_users]' AND flag_tarik='0';";
+            $sql2=mysqli_query($koneksi, $query2) or die (mysqli_error($koneksi));
+            //$t = mysqli_fetch_array($sql);
+            while ($data2 = mysqli_fetch_array($sql2))
+            //var_dump($t['username']);
+            //while ($data2 = mysqli_fetch_array($sql2)) 
+            { //$total = $data['harga_sampah'] + $data['harga_total'];
+             ?>
+            <tr>
+              <td><?=$no++?></td>
+              <td><?=$data2['id_users']?></td>
+              <td><?=$data2['username']?></td>
+              <td><?=$data2['tabungan']?></td>
+
+            </tbody>              
+            <?php
+              echo "<a href='tarik.php?id_setor=".$data2['id_setor']."' class='btn btn-danger'>tarik</a>";
+
+            }
+        ?>
+        </table>
+
+                    </div>
+
                     </div>
                     <div id="performance-indicator-chart" class="ct-chart mt-4"></div>
                   </div>

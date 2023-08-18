@@ -2,6 +2,7 @@
     include "koneksi.php";
 
     session_start();
+    $id_users = $_SESSION['id_users'];
     $username = $_SESSION['username'];
 
 //$tampilPeg=mysqli_query($koneksi, "SELECT * FROM setor WHERE username='$_SESSION[username]'");
@@ -12,38 +13,21 @@
 $nama_sm= "";
 $jumlah=null;
 
-$sql="SELECT id_sampah,COUNT(*) as 'total' FROM setor GROUP by id_sampah";
+$sql="SELECT nama_sampah,COUNT(*) as 'total' FROM setor GROUP by nama_sampah";
 
 $hasil=mysqli_query($koneksi,$sql);
 
 while ($data = mysqli_fetch_array($hasil)) {
-$sm=$data['id_sampah'];
+$sm=$data['nama_sampah'];
 $nama_sm .= "'$sm'". ", ";
 
 $jum=$data['total'];
 $jumlah .= "$jum". ", ";
-
 }
 //Query untuk menampilkan tabel mahasiswa2
 
 
 ?>
-
-<?php
-        $id_usr= "";
-        $jumlah=null;
-
-        $sql="SELECT id_users,COUNT(*) as 'total' FROM users";
-
-          $hasil=mysqli_query($koneksi,$sql);
-
-    while ($data = mysqli_fetch_array($hasil)) {
-
-        $jum=$data['total'];
-        $jumlah .= "$jum". ", ";
-    }
-
-    ?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -54,8 +38,10 @@ $jumlah .= "$jum". ", ";
     <title>BANK SAMPAH</title>
     <!-- plugins:css -->
     <link rel="stylesheet" href="vendors/simple-line-icons/css/simple-line-icons.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
     <link rel="stylesheet" href="vendors/flag-icon-css/css/flag-icon.min.css">
     <link rel="stylesheet" href="vendors/css/vendor.bundle.base.css">
+    <link rel="stylesheet"  type="text/css" href="style.css">
     <!-- endinject -->
     <!-- Plugin css for this page -->
     <link rel="stylesheet" href="./vendors/daterangepicker/daterangepicker.css">
@@ -67,10 +53,8 @@ $jumlah .= "$jum". ", ";
     <link rel="stylesheet" href="./css/style.css">
     <!-- End layout styles -->
     <link rel="shortcut icon" href="./images/favicon.png" />
-    <!-- fontawsome -->
-    <link rel="stylesheet" href="fontawesome/css/font-awesome.min.css">
-    <!-- bootstrap js -->
-    
+    <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" />
   </head>
   <body>
 
@@ -130,14 +114,14 @@ $jumlah .= "$jum". ", ";
             </li>
             <li class="nav-item nav-category"><span class="nav-link">UI Elements</span></li>
             <li class="nav-item">
-              <a class="nav-link" href="saldo.php">
-                <span class="menu-title">Saldo Anda</span>
+              <a class="nav-link" href="data_sampah.php">
+                <span class="menu-title">Data Sampah</span>
                 <i class="icon-chart menu-icon"></i>
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="dtsampah.php">
-                <span class="menu-title">Data Sampah</span>
+              <a class="nav-link" href="pages/tables/basic-table.html">
+                <span class="menu-title">Tables</span>
                 <i class="icon-grid menu-icon"></i>
               </a>
             </li>
@@ -153,31 +137,41 @@ $jumlah .= "$jum". ", ";
 
                 </div>
               </div>
-            </div>    
-            
-            
-            <?php
-     include "koneksi.php";
-
-     $query = "SELECT * FROM sampah;";
-     $sql = mysqli_query($koneksi, $query );
-     $no = 0;
-?>
-<div class="container">
+            </div>     
+              
+            <div class="row">
+              <div class="col-md-12 grid-margin">
+                <div class="card">
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="col-md-12">
+                        <div class="d-sm-flex align-items-baseline report-summary-header">
+                          <h5 class="font-weight-semibold">Data Harga</h5> <span class="ml-auto">Updated Report</span> <button class="btn btn-icons border-0 p-2"><i class="icon-refresh"></i></button>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row report-inner-cards-wrapper">
+                    <div class="container">
   <center class="mt-4 fs-semibold"><h2>DATA SAMPAH</h2></center>
     <table border="1" class="table align-middle mt-5">
     <thead>
-        <tr>
+        <tr style="text-align:center;">
             <th>No</th>
             <th>Nama</th>
             <th>harga</th>
             <th>Opsi</th>
-
         </tr>
     </thead>
     <tbody>
 
         <?php
+        include "koneksi.php";
+
+        $query = "SELECT * FROM sampah;";
+        $sql = mysqli_query($koneksi, $query );
+        $no = 0;
+
+
         $sql = "SELECT * FROM sampah";
         $query = mysqli_query($koneksi, $sql);
 
@@ -187,26 +181,31 @@ $jumlah .= "$jum". ", ";
             echo "<td>". ++$no."</td>";
             echo "<td>".$data['nama_sampah']."</td>";
             echo "<td>".$data['harga_sampah']."</td>";
-
             echo "<td>";
-            echo "<a href='edit_sampah.php?id_sampah=".$data['id_sampah']."' class='btn btn-success ml-1'>Edit</a>";
-            echo "<a href='hapus.php?id_sampah=".$data['id_sampah']."' class='btn btn-danger'>Hapus</a>";
+            echo "<a href='edit_sampah.php?id_sampah=".$data['id_sampah']."' class='tmbl btn-success ml-1'><span class='material-symbols-outlined' style='display: flex; '>
+            edit
+            </span></a>";
+            echo "<a href='hapus.php?id_sampah=".$data['id_sampah']."' class='tmbl btn-danger'><span class='material-symbols-outlined'>
+            delete
+            </span></a>";
             echo "</td>";
-
             echo "</tr>";
         }
         ?>
+        <a href="tambah_sampah.php" class="tmbl btn-primary p-2"><span class="material-symbols-outlined">
+add
+</span></i></a>
 
     </tbody>
     </table>
-        <a href="form_jual.php" class="mt-5 btn btn-primary">Jual Barang</a>
-        <a href="tambah_sampah.php" class="mt-5 btn btn-primary">Tambah Barang</a>
-        </div>
-
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
+            </div>      
+            
+
+            <di
 
           </div>
           <!-- content-wrapper ends -->
